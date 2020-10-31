@@ -1,9 +1,6 @@
 package com.booking;
 
-import sun.tools.jconsole.Worker;
-
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Anagram {
     public static void main(String[] args) {

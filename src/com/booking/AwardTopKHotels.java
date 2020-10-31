@@ -7,7 +7,7 @@ public class AwardTopKHotels {
 
         String positiveKeywords = "breakfast beach citycenter location metro view staff price";
         String negativeKeywords = "not";
-        int[] hotelsId = new int[] {1,5,3,4,2};
+        int[] hotelsId = new int[] {1,2,1,1,2};
         List<String> reviews = new ArrayList<String>();
         reviews.add("This hotel has a nice view of the citycenter. The location is perfect");
         reviews.add("The breakfast is ok. Regarding location, it is quite far from citycenter but price is cheap so it is worth");
