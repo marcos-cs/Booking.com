@@ -1,32 +1,11 @@
 ## Problem:
-An anagram is a word that can be written as a permutation of the characters
-of another word, like "dirty room" and "dormitory" (ignore spaces). However,
-"the" and "thee" are not anagrams, since "the" only has a single "e" whereas
-"thee" has two "e" characters (spaces can occur zero, or multiple times, however.)
+At Booking.com we want to recognize k performing hotels. We plan to identify these by analyzing their user reviews and calculating a review score for ech of the hotel.
 
-Given a list of words as strings, you should return another list of strings,
-each containing words that are mutual anagrams.
+to calculate the score, we have:
+* a list of user reviews for each hotel,
+* a list of positive keywords and
+* a lit of negative keywords 
 
-Each string of the output should be a single group of anagarms joined with commas.
+Positive keywords weigh 3 point each and negative keywords weigh -1 each.
 
-Within an output string, the expression should be sorted lexicographically.
-If a group contains only a single element, output that one-element group
-as a single string. And the string should be also output in lexicographical
-order.  Given e.g.:
-```
-pear
-amleth
-dormitory
-tinsel
-dirty room
-hamlet
-listen
-silnet
-```
-... the output would be:
-```
-amleth,hamlet
-dirty room,dormitory
-listen,silnet,tinsel
-pear
-```
+Complete the function awardTopKHotels. The function must return list of hotel ids sorted in descending order of their total score.
