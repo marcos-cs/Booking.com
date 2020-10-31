@@ -2,7 +2,7 @@ package com.booking;
 
 import java.util.*;
 
-public class Main {
+public class AwardTopKHotels {
     public static void main(String[] args) {
 
         String positiveKeywords = "breakfast beach citycenter location metro view staff price";
