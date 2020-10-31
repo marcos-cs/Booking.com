@@ -7,4 +7,5 @@ The online coding assignment consists of four problems:
 - [Delta Encoding](./delta-encoding.md)
 - [Mutual Anagrams Detector](./anagram.md)
 - [Array Analyzer](./sum-array.md)
+- [Award top k hotels](./awardtophotels.md)
 
