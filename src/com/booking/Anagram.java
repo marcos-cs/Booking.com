@@ -33,16 +33,11 @@ public class Anagram {
         int[] iWord = new int[26];
         for (int i = 0; i< word.length(); i++) {
             char w = word.charAt(i);
-            iWord[(int)w-97]++;
+            iWord[(int)w-97]+=(int)w-97;
         }
         int preVal = iWord[0]+1;
         for (int i = 1; i< iWord.length; i++) {
-            if (iWord[i]>0) {
-                preVal *= i + preVal;
-            } else {
-                preVal+=preVal;
-            }
-
+            preVal+=iWord[i];
         }
         return preVal;
     }
