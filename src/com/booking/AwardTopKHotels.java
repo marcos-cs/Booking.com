@@ -30,16 +30,13 @@ public class AwardTopKHotels {
             return top;
         }
 
-        HashMap<String, List<Integer>> positiveMap = new HashMap<>();
-        HashMap<String, List<Integer>> negativeMap = new HashMap<>();
+        HashSet<String> positiveMap = convertToSet(positiveKeywords);
+        HashSet<String> negativeMap = convertToSet(negativeKeywords);
 
-        convertToMap(positiveKeywords, negativeKeywords, positiveMap, negativeMap);
+        HashMap<Integer, Integer> hotelsSum = analyzeHotels(hotelsIds, reviews, positiveMap, negativeMap);
 
-        analyzeHotels(hotelsIds, reviews, positiveMap, negativeMap);
+        Hotel[] listHotels = getHotelsSorted(hotelsSum);
 
-        HashMap<Integer, Integer> hotels = calcHotelsScore(k, positiveMap, negativeMap);
-
-        Hotel[] listHotels = getHotelsSorted(hotels);
         System.out.println(Arrays.toString(listHotels));
         for (int i = 0; i<listHotels.length; i++) {
             if (i<k || (i > 0 && listHotels[i].count == listHotels[i-1].count )) {
@@ -67,74 +64,46 @@ public class AwardTopKHotels {
         return listHotels;
     }
 
-
-    private static HashMap<Integer, Integer> calcHotelsScore(int k, HashMap<String, List<Integer>> positiveMap, HashMap<String, List<Integer>> negativeMap) {
-        HashMap<Integer, Integer> hotels = new HashMap<>();
-
-        Iterator<String> it = positiveMap.keySet().iterator();
-        while (it.hasNext()) {
-            String word = it.next();
-            List<Integer> hotelsId = positiveMap.get(word);
-
-            if (hotelsId.size()>0) {
-                hotelsId.forEach((h) -> {
-                    if (hotels.containsKey(h)) {
-                        hotels.put(h, hotels.get(h)+3);
-                    } else {
-                        hotels.put(h, 3);
-                    }
-                });
-            }
-
-        }
-
-
-        negativeMap.forEach((word, hotelsId) -> {
-            if (hotelsId.size()>0) {
-                hotelsId.forEach((h) -> {
-                    if (hotels.get(h)!=null) {
-                        hotels.put(h, hotels.get(h)-1);
-                    } else {
-                        hotels.put(h, -1);
-                    }
-                });
-            }
-        });
-        return hotels;
-    }
-
-    private static void analyzeHotels(int[] hotelsIds, List<String> reviews, HashMap<String, List<Integer>> positiveMap, HashMap<String, List<Integer>> negativeMap) {
+    private static HashMap<Integer, Integer> analyzeHotels(int[] hotelsIds, List<String> reviews, HashSet<String> positiveMap, HashSet<String> negativeMap) {
         Iterator<String> it = reviews.iterator();
+        HashMap<Integer, Integer> hotelsSum = new HashMap<>();
         int pos = -1;
         while (it.hasNext()) {
             pos++;
             String review = it.next();
 
-            review = review.toLowerCase().replaceAll("[,.]", "");
+            String[] words = review.toLowerCase().replaceAll("[,.]", "").split(" ");
 
-            String[] words =  review.toLowerCase().split(" ");
             for (int i = 0; i< words.length; i++) {
-                if (positiveMap.containsKey(words[i])) {
-                    positiveMap.get(words[i]).add(hotelsIds[pos]);
+                if (positiveMap.contains(words[i])) {
+                    if (hotelsSum.containsKey(hotelsIds[pos])) {
+                        hotelsSum.put(hotelsIds[pos], hotelsSum.get(hotelsIds[pos]) + 3);
+                    } else {
+                        hotelsSum.put(hotelsIds[pos],  3);
+                    }
+
                 }
-                if (negativeMap.containsKey(words[i])) {
-                    negativeMap.get(words[i]).add(hotelsIds[pos]);
+                if (negativeMap.contains(words[i])) {
+                    if (hotelsSum.containsKey(hotelsIds[pos])) {
+                        hotelsSum.put(hotelsIds[pos], hotelsSum.get(hotelsIds[pos]) + 1);
+                    } else {
+                        hotelsSum.put(hotelsIds[pos],  -1);
+                    }
                 }
             }
 
         }
+        return hotelsSum;
     }
 
-    private static void convertToMap(String positiveKeywords, String negativeKeywords, HashMap<String, List<Integer>> positiveMap, HashMap<String, List<Integer>> negativeMap) {
-        String[] p = positiveKeywords.split(" ");
-        String[] n = negativeKeywords.split(" ");
-
+    private static HashSet<String> convertToSet(String keywords) {
+        String[] p = keywords.split(" ");
+        HashSet<String> keywordSet = new HashSet<>();
         for (int i = 0; i<p.length; i++) {
-            positiveMap.put(p[i], new LinkedList<>());
+            keywordSet.add(p[i]);
         }
-        for (int i = 0; i<n.length; i++) {
-            negativeMap.put(p[i], new LinkedList<>());
-        }
+        return keywordSet;
+
     }
 
     static class Hotel implements Comparable<Hotel> {

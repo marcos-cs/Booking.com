@@ -30,28 +30,3 @@ Sample Output:
 ```
 1
 ```
-
-## Solution
-
-```php
-<?php
-    
-$input = file_get_contents("php://stdin");
-
-$lines = explode("\n", $input);
-$lines = array_map('intval', $lines);
-
-$sum = array_shift($lines);
-$len = array_shift($lines);
-
-$found = false;
-foreach ($lines as $num) {
-    $diff = $sum - $num;
-    if (in_array($diff, $lines)) {
-        $found = true;
-        break;
-    }
-}
-
-fwrite(STDOUT, intval($found));
-```
