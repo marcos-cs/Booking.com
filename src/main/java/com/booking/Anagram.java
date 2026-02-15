@@ -1,49 +1,59 @@
 package com.booking;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
+/**
+ * Mutual Anagrams Detector
+ *
+ * Given a list of words, groups them by mutual anagrams.
+ * Spaces are ignored when determining anagrams.
+ * Each group is output as a comma-separated string, sorted lexicographically.
+ * Groups themselves are also sorted lexicographically (by first element).
+ */
 public class Anagram {
+
     public static void main(String[] args) {
+        String[] words = {"pear", "amleth", "dormitory", "tinsel", "dirty room", "hamlet", "listen", "silnet"};
 
-        String[] words = new String[]{"pear", "amleth", "dormitory", "tinsel", "dirtyroom", "hamlet", "listen", "silnet"};
-
-        HashMap<Integer, List<String>> result = new HashMap<>();
-
-        for (int i = 0; i<words.length; i++) {
-            int sum = sumWord(words[i]);
-            if (result.containsKey(sum)) {
-                result.get(sum).add(words[i]);
-            } else {
-                List<String> listWords = new LinkedList<>();
-                listWords.add(words[i]);
-                result.put(sum, listWords);
-            }
-        }
-
-        result.forEach((k,v) -> {
-            if (v.size()>1) {
-                System.out.println(v);
-            }
-        });
-
+        List<String> result = groupAnagrams(words);
+        result.forEach(System.out::println);
     }
 
-    private static int sumWord(String input) {
-        String word = input.replaceAll(" |[,|.]", "");
-        int[] iWord = new int[26];
-        for (int i = 0; i< word.length(); i++) {
-            char w = word.charAt(i);
-            iWord[(int)w-97]+=(int)w-97;
+    /**
+     * Groups words that are mutual anagrams and returns them as sorted comma-separated strings.
+     *
+     * @param words array of input words
+     * @return list of comma-separated anagram groups, sorted lexicographically
+     */
+    public static List<String> groupAnagrams(String[] words) {
+        Map<String, List<String>> groups = new TreeMap<>();
+
+        for (String word : words) {
+            String signature = getAnagramSignature(word);
+            groups.computeIfAbsent(signature, k -> new ArrayList<>()).add(word);
         }
-        int preVal = iWord[0]+1;
-        for (int i = 1; i< iWord.length; i++) {
-            preVal+=iWord[i];
-        }
-        return preVal;
+
+        return groups.values().stream()
+                .map(group -> {
+                    Collections.sort(group);
+                    return String.join(",", group);
+                })
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-
+    /**
+     * Produces a canonical signature for anagram detection by:
+     * 1. Removing all spaces
+     * 2. Converting to lowercase
+     * 3. Sorting the characters
+     *
+     * Two words are anagrams if and only if they have the same signature.
+     */
+    static String getAnagramSignature(String input) {
+        char[] chars = input.replaceAll("\\s+", "").toLowerCase().toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }
 }

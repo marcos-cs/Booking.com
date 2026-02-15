@@ -1,32 +1,40 @@
-package main.java.com.booking;
+package com.booking;
 
 import java.util.Arrays;
-import java.util.Collections;
 
+/**
+ * Zigzag Fashion
+ *
+ * Rearranges an array into zigzag fashion: a < b > c < d > e < f ...
+ * The algorithm swaps adjacent elements that violate the zigzag property.
+ */
 public class ZigzagFlashion {
+
     public static void main(String[] args) {
-        int arr[] = new int[]{4, 3, 7, 8, 6, 2, 1, 5, 19};
-        int expected[] = new int[]{3, 7, 4, 8, 2, 6, 1, 19, 5}; // a < b > c < d > e < f > 1 < 19 > 5.
-        boolean less = true;
-        for (int i=0; i<arr.length-1; i++) {
+        int[] arr = {4, 3, 7, 8, 6, 2, 1, 5, 19};
+        zigzag(arr);
+        System.out.println(Arrays.toString(arr));
+    }
 
-            if (less && arr[i]>arr[i+1]) {
-                var aux = arr[i+1];
-                arr[i+1] = arr[i];
-                arr[i] = aux;
-
-            } else if (!less && arr[i]<arr[i+1] ){
-                var aux = arr[i+1];
-                arr[i+1] = arr[i];
-                arr[i] = aux;
-
-            }
-            less = !less;
+    /**
+     * Rearranges the array in-place so that:
+     * arr[0] < arr[1] > arr[2] < arr[3] > arr[4] ...
+     *
+     * @param arr the array to rearrange
+     */
+    public static void zigzag(int[] arr) {
+        if (arr == null || arr.length <= 1) {
+            return;
         }
 
-        System.out.println(Arrays.toString(arr));
-        System.out.println(Arrays.equals(arr, expected));
-
-
+        boolean expectLess = true;
+        for (int i = 0; i < arr.length - 1; i++) {
+            if ((expectLess && arr[i] > arr[i + 1]) || (!expectLess && arr[i] < arr[i + 1])) {
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+            }
+            expectLess = !expectLess;
+        }
     }
 }
