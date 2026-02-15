@@ -18,14 +18,12 @@ Solutions to [Booking.com](http://www.booking.com/)'s coding assignment for the 
 | Problem | Description | Solution |
 |---------|-------------|----------|
 | Zigzag Array | Rearrange array in zigzag fashion (a < b > c < d > ...) | [Java](src/main/java/com/booking/ZigzagFlashion.java) |
-| Defect Service | Filter car defects by model and year | [Java](src/main/java/com/olx/challenge/DefectService.java) |
 
 ## Tech Stack
 
 - **Language:** Java 11
 - **Build:** Maven
 - **Testing:** JUnit 5 + AssertJ
-- **Libraries:** Google Guava
 
 ## Getting Started
 
@@ -68,11 +66,6 @@ src/
 │   │   ├── Anagram.java       # Mutual anagrams detector
 │   │   ├── AwardTopKHotels.java  # Hotel ranking by reviews
 │   │   └── ZigzagFlashion.java   # Zigzag array rearrangement
-│   └── com/olx/challenge/     # OLX challenge
-│       ├── Car.java
-│       ├── Defect.java
-│       ├── DefectApiClient.java
-│       └── DefectService.java
 └── test/java/
     └── com/booking/           # Unit tests
         ├── AnagramTest.java
